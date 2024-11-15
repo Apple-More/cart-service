@@ -3,37 +3,35 @@ import { Request, Response, NextFunction } from 'express';
 
 export const createCartItem = async (
   req: Request,
-  res:Response,
-  next:NextFunction,
-):Promise<void> => {
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
   try {
-    const { quantity, product_variant_id, customer_id} = req.body;
+    const { quantity, product_variant_id, customer_id } = req.body;
 
-    await prisma.cart_Items.create({
+    const cart = await prisma.cart_Items.create({
       data: {
         quantity,
         product_variant_id,
         customer_id,
       },
-
     });
 
     res.status(201).json({
-      status:'success',
-      message:'Cart item created successfully',
+      status: 'success',
+      data: cart,
+      message: 'Cart item created successfully',
     });
   } catch (error) {
     next(error);
   }
-}
-
-
+};
 
 export const getCartItems = async (
   req: Request,
   res: Response,
   next: NextFunction,
-):Promise<void> => {
+): Promise<void> => {
   try {
     const cartItems = await prisma.cart_Items.findMany();
     res.status(200).json({
@@ -78,10 +76,9 @@ export const deleteCartItem = async (
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
-  const { cart_item_id } = req.params; 
+  const { cart_item_id } = req.params;
 
   try {
-
     const deletedItem = await prisma.cart_Items.delete({
       where: { cart_item_id },
     });
@@ -92,7 +89,6 @@ export const deleteCartItem = async (
       message: 'Cart item deleted successfully',
     });
   } catch (error) {
-
     next(error);
   }
 };
