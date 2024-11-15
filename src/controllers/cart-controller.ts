@@ -50,12 +50,11 @@ export const getCartItemsByUser = async (
   next: NextFunction,
 ): Promise<void> => {
   try {
-    
     const { customer_id } = req.params;
-    
+
     const cartItems = await prisma.cart_Items.findMany({
       where: {
-        customer_id: customer_id, 
+        customer_id: customer_id,
       },
     });
 
@@ -104,13 +103,13 @@ export const deleteCartItem = async (
   const { cart_item_id } = req.params;
 
   try {
-    const deletedItem = await prisma.cart_Items.delete({
+    await prisma.cart_Items.delete({
       where: { cart_item_id },
     });
 
     res.status(200).json({
       status: true,
-      data: deletedItem,
+      data: [],
       message: 'Cart item deleted successfully',
     });
   } catch (error) {

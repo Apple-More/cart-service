@@ -4,7 +4,7 @@ import {
   createCartItem,
   updateCartItem,
   deleteCartItem,
-  getCartItemsByUser
+  getCartItemsByUser,
 } from '../controllers/cart-controller';
 
 const router = Router();
