@@ -44,6 +44,31 @@ export const getCartItems = async (
   }
 };
 
+export const getCartItemsByUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    
+    const { customer_id } = req.params;
+    
+    const cartItems = await prisma.cart_Items.findMany({
+      where: {
+        customer_id: customer_id, 
+      },
+    });
+
+    res.status(200).json({
+      status: true,
+      data: cartItems,
+      message: 'Cart items fetched successfully for user',
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const updateCartItem = async (
   req: Request,
   res: Response,
