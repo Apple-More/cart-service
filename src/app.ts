@@ -1,8 +1,7 @@
-// src/app.ts
 import express, { Request, Response } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
-import router from './routes';
+import router from './routes/index';
 
 const app = express();
 
@@ -15,7 +14,7 @@ app.get('/health', (req: Request, res: Response) => {
   res.status(200).json({ status: 'UP' });
 });
 
-app.use('/', router);
+app.use('/v1', router);
 
 // 404 handler for unknown routes
 app.use((req: Request, res: Response) => {
