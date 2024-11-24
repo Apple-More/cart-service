@@ -1,5 +1,6 @@
 import prisma from '../config/prisma';
 import { Request, Response, NextFunction } from 'express';
+import { fetchProductVariantDetails } from '../utils/axios';
 
 export const createCartItem = async (
   req: Request,
@@ -57,10 +58,21 @@ export const getCartItemsByUser = async (
         customer_id: customer_id,
       },
     });
+   
+    const cartItemDetails = await Promise.all(
+      cartItems.map(async(cartItem)=>{
+        const variantDetails = await fetchProductVariantDetails(cartItem.product_variant_id);
+        // console.log('variantDetails', variantDetails);
+        return {
+          ...cartItem, 
+          variantDetails, 
+        };
+      })
+    )
 
     res.status(200).json({
       status: true,
-      data: cartItems,
+      data: cartItemDetails,
       message: 'Cart items fetched successfully for user',
     });
   } catch (error) {
