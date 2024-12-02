@@ -11,7 +11,7 @@ app.use(express.json());
 
 // Health check route
 app.get('/health', (req: Request, res: Response) => {
-  res.status(200).json({ status: 'UP' });
+  res.status(200).json({ status: 'Cart service is online' });
 });
 
 app.use('/v1', router);
