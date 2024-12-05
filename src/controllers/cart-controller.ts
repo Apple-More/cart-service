@@ -5,8 +5,7 @@ import { fetchProductVariantDetails } from '../utils/axios';
 export const createCartItem = async (
   req: Request,
   res: Response,
-  next: NextFunction,
-): Promise<void> => {
+): Promise<any> => {
   try {
     const { quantity, product_variant_id, customer_id } = req.body;
 
@@ -18,38 +17,44 @@ export const createCartItem = async (
       },
     });
 
-    res.status(201).json({
+    return res.status(201).json({
       status: 'success',
       data: cart,
       message: 'Cart item created successfully',
     });
   } catch (error) {
-    next(error);
+    return res.status(500).json({
+      status: 'error',
+      data: null,
+      message: 'Error creating cart item',
+    });
   }
 };
 
 export const getCartItems = async (
   req: Request,
   res: Response,
-  next: NextFunction,
-): Promise<void> => {
+): Promise<any> => {
   try {
     const cartItems = await prisma.cart_Items.findMany();
-    res.status(200).json({
+    return res.status(200).json({
       status: true,
       data: cartItems,
       message: 'Cart items fetched successfully',
     });
   } catch (error) {
-    next(error);
+    return res.status(500).json({
+      status: 'error',
+      data: null,
+      message: 'Error fetching cart items',
+    });
   }
 };
 
 export const getCartItemsByUser = async (
   req: Request,
   res: Response,
-  next: NextFunction,
-): Promise<void> => {
+): Promise<any> => {
   try {
     const { customer_id } = req.params;
 
@@ -70,20 +75,24 @@ export const getCartItemsByUser = async (
       })
     )
 
-    res.status(200).json({
+    return res.status(200).json({
       status: true,
       data: cartItemDetails,
       message: 'Cart items fetched successfully for user',
     });
   } catch (error) {
-    next(error);
+    return res.status(500).json({
+      status: 'error',
+      data: null,
+      message: 'Error fetching cart items for user',
+    });
   }
 };
 
 export const updateCartItem = async (
   req: Request,
   res: Response,
-): Promise<void> => {
+): Promise<any> => {
   try {
     const cart_item_id = req.params.cart_item_id;
     const { quantity } = req.body;
@@ -93,13 +102,13 @@ export const updateCartItem = async (
         quantity,
       },
     });
-    res.status(200).json({
+    return res.status(200).json({
       status: true,
       data: cart_Item,
       message: 'Cart item updated successfully',
     });
   } catch (error: any) {
-    res.status(500).json({
+    return res.status(500).json({
       status: false,
       data: null,
       message: `Error updating cart item: ${error.message}`,
@@ -110,8 +119,7 @@ export const updateCartItem = async (
 export const deleteCartItem = async (
   req: Request,
   res: Response,
-  next: NextFunction,
-): Promise<void> => {
+): Promise<any> => {
   const { cart_item_id } = req.params;
 
   try {
@@ -119,12 +127,16 @@ export const deleteCartItem = async (
       where: { cart_item_id },
     });
 
-    res.status(200).json({
+    return res.status(200).json({
       status: true,
       data: [],
       message: 'Cart item deleted successfully',
     });
   } catch (error) {
-    next(error);
+    return res.status(500).json({
+      status: 'error',
+      data: null,
+      message: 'Error deleting cart item',
+    });
   }
 };

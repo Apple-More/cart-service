@@ -74,7 +74,7 @@ import {
           customer_id: 'cust-456',
         });
   
-        await createCartItem(req as Request, res as Response, jest.fn());
+        await createCartItem(req as Request, res as Response);
   
         expect(prismaClient.cart_Items.create).toHaveBeenCalledWith({
           data: {
@@ -108,7 +108,7 @@ import {
           { cart_item_id: 'cart-2', quantity: 2, product_variant_id: 'prod-2', customer_id: 'cust-2' },
         ]);
   
-        await getCartItems(req as Request, res as Response, jest.fn());
+        await getCartItems(req as Request, res as Response);
   
         expect(prismaClient.cart_Items.findMany).toHaveBeenCalled();
         expect(res.status).toHaveBeenCalledWith(200);
@@ -174,7 +174,7 @@ import {
     
         (fetchProductVariantDetails as jest.Mock).mockResolvedValue(variantDetailsMock);
     
-        await getCartItemsByUser(req as Request, res as Response, jest.fn());
+        await getCartItemsByUser(req as Request, res as Response);
     
         // Assertions
         expect(prismaClient.cart_Items.findMany).toHaveBeenCalled();
@@ -260,7 +260,7 @@ import {
   
         prismaClient.cart_Items.delete.mockResolvedValue({});
   
-        await deleteCartItem(req as Request, res as Response, jest.fn());
+        await deleteCartItem(req as Request, res as Response);
   
         expect(prismaClient.cart_Items.delete).toHaveBeenCalledWith({
           where: { cart_item_id: 'cart-123' },
