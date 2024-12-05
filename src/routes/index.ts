@@ -9,10 +9,9 @@ import {
 
 const router = Router();
 
-router.get('/', getCartItems);
-router.post('/', createCartItem);
-router.put('/:cart_item_id', updateCartItem);
-router.delete('/:cart_item_id', deleteCartItem);
-router.get('/customer/:customer_id', getCartItemsByUser);
+router.post('/cart-items', createCartItem);
+router.put('/cart-items/:cart_item_id', updateCartItem);
+router.delete('/cart-items/:cart_item_id', deleteCartItem);
+router.get('/customer/:customer_id/cart-items', getCartItemsByUser);
 
 export default router;
