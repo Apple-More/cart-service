@@ -10,7 +10,7 @@ app.use(helmet());
 app.use(express.json());
 
 // Health check route
-app.get('/health', (req: Request, res: Response) => {
+app.get('/public/health', (req: Request, res: Response) => {
   res.status(200).json({ status: 'Cart service is online' });
 });
 
