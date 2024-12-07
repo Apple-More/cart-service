@@ -1,5 +1,5 @@
 import prisma from '../config/prisma';
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 import { fetchProductVariantDetails } from '../utils/axios';
 
 export const createCartItem = async (
@@ -22,11 +22,11 @@ export const createCartItem = async (
       data: cart,
       message: 'Cart item created successfully',
     });
-  } catch (error) {
+  } catch (error: any) {
     return res.status(500).json({
       status: 'error',
       data: null,
-      message: 'Error creating cart item',
+      message: 'Error creating cart item. Error: ' + error.message,
     });
   }
 };
@@ -42,11 +42,11 @@ export const getCartItems = async (
       data: cartItems,
       message: 'Cart items fetched successfully',
     });
-  } catch (error) {
+  } catch (error: any) {
     return res.status(500).json({
       status: 'error',
       data: null,
-      message: 'Error fetching cart items',
+      message: 'Error fetching cart items. Error: ' + error.message,
     });
   }
 };
@@ -63,28 +63,30 @@ export const getCartItemsByUser = async (
         customer_id: customer_id,
       },
     });
-   
+
     const cartItemDetails = await Promise.all(
-      cartItems.map(async(cartItem)=>{
-        const variantDetails = await fetchProductVariantDetails(cartItem.product_variant_id);
+      cartItems.map(async (cartItem) => {
+        const variantDetails = await fetchProductVariantDetails(
+          cartItem.product_variant_id,
+        );
         // console.log('variantDetails', variantDetails);
         return {
-          ...cartItem, 
-          variantDetails, 
+          ...cartItem,
+          variantDetails,
         };
-      })
-    )
+      }),
+    );
 
     return res.status(200).json({
       status: true,
       data: cartItemDetails,
       message: 'Cart items fetched successfully for user',
     });
-  } catch (error) {
+  } catch (error: any) {
     return res.status(500).json({
       status: 'error',
       data: null,
-      message: 'Error fetching cart items for user',
+      message: 'Error fetching cart items for user. Error: ' + error.message,
     });
   }
 };
@@ -132,11 +134,11 @@ export const deleteCartItem = async (
       data: [],
       message: 'Cart item deleted successfully',
     });
-  } catch (error) {
+  } catch (error: any) {
     return res.status(500).json({
       status: 'error',
       data: null,
-      message: 'Error deleting cart item',
+      message: 'Error deleting cart item. Error: ' + error.message,
     });
   }
 };
