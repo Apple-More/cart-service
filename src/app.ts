@@ -14,6 +14,7 @@ app.get('/public/health', (req: Request, res: Response) => {
   res.status(200).json({ status: 'Cart service is online' });
 });
 
+
 app.use('/v1', router);
 
 // 404 handler for unknown routes
