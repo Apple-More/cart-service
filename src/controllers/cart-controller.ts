@@ -81,6 +81,7 @@ export const getCartItemsByUser = async (
       message: 'Cart items fetched successfully for user',
     });
   } catch (error) {
+    console.log(error)
     return res.status(500).json({
       status: 'error',
       data: null,
